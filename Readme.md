@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Виктория Лаптева](https://up.htmlacademy.ru/javascript/20/user/1320937).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Лялихов](https://htmlacademy.ru/profile/id983003).
 
 ---
 
