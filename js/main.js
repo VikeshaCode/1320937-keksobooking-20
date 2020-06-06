@@ -1,3 +1,5 @@
+'use strict';
+
 var houseType = ['palace', 'flat', 'house', 'bungalo'];
 var time = ['12:00', '13:00', '14:00'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -43,4 +45,19 @@ var generateArray = function () {
   }
   return array;
 };
+
+var data = generateArray();
+
+var pins = document.querySelector('.map__pins');
+var pin = document.querySelector('#pin')
+  .content
+  .querySelector('button');
+
+for (var i = 0; i < data.length; i++) {
+  var currentDatum = data[i];
+  var element = pin.cloneNode(true);
+  element.style.left = currentDatum.location.x + (pin.getBoundingClientRect().width / 2) + 'px';
+  element.style.top = currentDatum.location.y + (pin.getBoundingClientRect().height / 2) + 'px';
+  pins.appendChild(element);
+}
 
