@@ -59,9 +59,9 @@ for (var i = 0; i < data.length; i++) {
   element.style.left = currentDatum.location.x + (pin.getBoundingClientRect().width / 2) + 'px';
   element.style.top = currentDatum.location.y + (pin.getBoundingClientRect().height / 2) + 'px';
 
-  var picture = element.firstElementChild;
-  picture.src = currentDatum.author.avatar;
-  picture.alt = currentDatum.offer.title;
+  var img = element.firstElementChild;
+  img.src = currentDatum.author.avatar;
+  img.alt = currentDatum.offer.title;
   fragment.appendChild(element);
 }
 pins.appendChild(fragment);
