@@ -1,9 +1,9 @@
 'use strict';
 
-var houseTypes = ['palace', 'flat', 'house', 'bungalo'];
-var times = ['12:00', '13:00', '14:00'];
-var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var HOUSE_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TIMES = ['12:00', '13:00', '14:00'];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var map = document.querySelector('.map');
 
 var generateObject = function (x) {
@@ -14,16 +14,16 @@ var generateObject = function (x) {
     offer: {
       title: 'Предложение ' + x,
       price: Math.round(Math.random() * 1000),
-      type: houseTypes[Math.round(Math.random() * 3)],
+      type: HOUSE_TYPES[Math.round(Math.random() * 3)],
       rooms: Math.round(Math.random() * 5),
       guests: Math.round(Math.random() * 6),
-      checkin: times[Math.round(Math.random() * 2)],
-      checkout: times[Math.round(Math.random() * 2)],
-      features: features.slice(
+      checkin: TIMES[Math.round(Math.random() * 2)],
+      checkout: TIMES[Math.round(Math.random() * 2)],
+      features: FEATURES.slice(
           Math.round(Math.random() * features.length),
           Math.round(Math.random() * features.length)),
       description: 'Oписание ' + x,
-      photos: photos.slice(
+      photos: PHOTOS.slice(
           Math.round(Math.random() * photos.length),
           Math.round(Math.random() * photos.length)),
     },
@@ -46,6 +46,8 @@ var generateArray = function () {
 };
 
 var data = generateArray();
+
+document.querySelector('.map').classList.remove('map--faded');
 
 var pins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
