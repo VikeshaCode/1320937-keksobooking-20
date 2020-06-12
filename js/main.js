@@ -20,12 +20,12 @@ var generateObject = function (x) {
       checkin: TIMES[Math.round(Math.random() * 2)],
       checkout: TIMES[Math.round(Math.random() * 2)],
       features: FEATURES.slice(
-          Math.round(Math.random() * features.length),
-          Math.round(Math.random() * features.length)),
+          Math.round(Math.random() * FEATURES.length),
+          Math.round(Math.random() * FEATURES.length)),
       description: 'Oписание ' + x,
       photos: PHOTOS.slice(
-          Math.round(Math.random() * photos.length),
-          Math.round(Math.random() * photos.length)),
+          Math.round(Math.random() * PHOTOS.length),
+          Math.round(Math.random() * PHOTOS.length)),
     },
     location: {
       x: Math.round(Math.random() * map.getBoundingClientRect().width),
@@ -60,6 +60,7 @@ for (var i = 0; i < data.length; i++) {
   var element = pin.cloneNode(true);
   element.style.left = currentDatum.location.x + (pin.getBoundingClientRect().width / 2) + 'px';
   element.style.top = currentDatum.location.y + (pin.getBoundingClientRect().height / 2) + 'px';
+  element.style.transform = 'translate(-50%, -100%)';
 
   var img = element.firstElementChild;
   img.src = currentDatum.author.avatar;
