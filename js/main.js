@@ -1,6 +1,6 @@
 'use strict';
 
-var HOUSE_TYPES_RUS = {
+var HOUSE_TYPES_MAPPING = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
@@ -101,7 +101,7 @@ var fillAdvertCard = function (cardData, template) {
   fillElementText(popupTitle, cardData.offer.title);
   fillElementText(popupAddress, cardData.offer.address);
   fillElementText(popupPrice, cardData.offer.price ? cardData.offer.price + ' ₽/ночь' : '');
-  fillElementText(popupType, HOUSE_TYPES_RUS[cardData.offer.type]);
+  fillElementText(popupType, HOUSE_TYPES_MAPPING[cardData.offer.type]);
   fillElementText(popupDescription, cardData.offer.description);
 
   if (cardData.offer.rooms && cardData.offer.guests) {
