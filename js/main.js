@@ -14,6 +14,9 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
+var getRandomNumber = function (maxNumber) {
+  return Math.round(Math.random() * maxNumber);
+};
 
 var generateObject = function (x) {
   var object = {
@@ -22,23 +25,23 @@ var generateObject = function (x) {
     },
     offer: {
       title: 'Предложение ' + x,
-      price: Math.round(Math.random() * 1000),
-      type: HOUSE_TYPES[Math.round(Math.random() * 3)],
-      rooms: Math.round(Math.random() * 5),
-      guests: Math.round(Math.random() * 6),
-      checkin: TIMES[Math.round(Math.random() * 2)],
-      checkout: TIMES[Math.round(Math.random() * 2)],
+      price: getRandomNumber(1000),
+      type: HOUSE_TYPES[getRandomNumber(HOUSE_TYPES.length)],
+      rooms: getRandomNumber(5),
+      guests: getRandomNumber(6),
+      checkin: TIMES[getRandomNumber(TIMES.length)],
+      checkout: TIMES[getRandomNumber(TIMES.length)],
       features: FEATURES.slice(
-          Math.round(Math.random() * FEATURES.length),
-          Math.round(Math.random() * FEATURES.length)),
+        getRandomNumber(FEATURES.length),
+        getRandomNumber(FEATURES.length)),
       description: 'Oписание ' + x,
       photos: PHOTOS.slice(
-          Math.round(Math.random() * PHOTOS.length),
-          Math.round(Math.random() * PHOTOS.length)),
+        getRandomNumber(PHOTOS.length),
+        getRandomNumber(PHOTOS.length)),
     },
     location: {
-      x: Math.round(Math.random() * map.getBoundingClientRect().width),
-      y: Math.round(Math.random() * 500) + 130,
+      x: getRandomNumber(map.getBoundingClientRect().width),
+      y: getRandomNumber(500) + 130,
     }
   };
   object.offer.address = object.location.x + ', ' + object.location.y;
