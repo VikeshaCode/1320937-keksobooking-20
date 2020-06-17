@@ -54,12 +54,12 @@ var generateObject = function (x) {
       checkin: TIMES[getRandomNumber(TIMES.length)],
       checkout: TIMES[getRandomNumber(TIMES.length)],
       features: FEATURES.slice(
-          getRandomNumber(FEATURES.length),
-          getRandomNumber(FEATURES.length)),
+        getRandomNumber(FEATURES.length),
+        getRandomNumber(FEATURES.length)),
       description: 'Oписание ' + x,
       photos: PHOTOS.slice(
-          getRandomNumber(PHOTOS.length),
-          getRandomNumber(PHOTOS.length)),
+        getRandomNumber(PHOTOS.length),
+        getRandomNumber(PHOTOS.length)),
     },
     location: {
       x: getRandomNumber(map.getBoundingClientRect().width),
@@ -192,12 +192,16 @@ var advertsData = generateArray();
 // Блокирует или активирует поля формы
 var disable = function (elements, state) {
   for (var i = 0; i < elements.length; i++) {
-    elements[i].setAttribute('disabled', state);
+    if (state) {
+      elements[i].setAttribute('disabled', state);
+    } else {
+      elements[i].removeAttribute('disabled');
+    }
   }
 };
 
-disable(formFieldsets, 'true');
-disable(mapFiltersInputs, 'true');
+disable(formFieldsets, true);
+disable(mapFiltersInputs, true);
 
 // Определение координаты главной метки
 var getPinCoords = function () {
@@ -222,8 +226,8 @@ var setAddress = function () {
 var activate = function () {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  disable(formFieldsets, 'false');
-  disable(mapFiltersInputs, 'false');
+  disable(formFieldsets, false);
+  disable(mapFiltersInputs, false);
   fillPins(advertsData);
 };
 
@@ -242,4 +246,33 @@ mapPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
+var typeField = adForm.querySelector('#type');
+var priceField = adForm.querySelector('#price');
+var timeinField = adForm.querySelector('#timein');
+var timeoutField = adForm.querySelector('#timeout');
+var roomNumberField = adForm.querySelector('#room_number');
+var capacityField = adForm.querySelector('#capacity');
 
+// Устанавливает минимальное значение цены
+var setMinPriceValue = function (evt) {
+  var minPrice = 0;
+  var type = evt.target.value;
+  switch (type) {
+    case 'flat':
+      minPrice = 1000;
+      break;
+    case 'palace':
+      minPrice = 10000;
+      break;
+    case 'bungalo':
+      minPrice = 0;
+      break;
+    case 'house':
+      minPrice = 5000;
+      break;
+  }
+  priceField.min = minPrice;
+  priceField.placeholder = minPrice;
+};
+
+typeField.addEventListener('change', setMinPriceValue);
