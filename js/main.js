@@ -1,5 +1,20 @@
 'use strict';
 
+var toNounString = function (number, titles) {
+  number = number % 100;
+  var number1 = number % 10;
+  if (number > 10 && number < 20) {
+    return titles[2];
+  }
+  if (number1 > 1 && number1 < 5) {
+    return titles[1];
+  }
+  if (number1 === 1) {
+    return titles[0];
+  }
+  return titles[2];
+};
+
 var HOUSE_TYPES_MAPPING = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -108,7 +123,9 @@ var fillAdvertCard = function (cardData, template) {
   fillElementText(popupDescription, cardData.offer.description);
 
   if (cardData.offer.rooms && cardData.offer.guests) {
-    popupCapacity.textContent = cardData.offer.rooms + ' комнат для ' + cardData.offer.guests + ' гостей';
+    var roomStr = cardData.offer.rooms + ' ' + toNounString(cardData.offer.rooms, ['комната', 'комнаты', 'комнат']);
+    var guestStr = 'для ' + cardData.offer.guests + ' ' + toNounString(cardData.offer.guests, ['гостя', 'гостей', 'гостей']);
+    popupCapacity.textContent = roomStr + ' ' + guestStr;
   } else {
     popupCapacity.remove();
   }
@@ -165,3 +182,4 @@ fillAdvertCard(firstAdvertData, mapCard);
 
 var mapPins = document.querySelector('.map .map__pins');
 mapPins.insertAdjacentElement('afterend', mapCard);
+
