@@ -47,12 +47,12 @@ var generateObject = function (x) {
       checkin: TIMES[getRandomNumber(TIMES.length)],
       checkout: TIMES[getRandomNumber(TIMES.length)],
       features: FEATURES.slice(
-        getRandomNumber(FEATURES.length),
-        getRandomNumber(FEATURES.length)),
+          getRandomNumber(FEATURES.length),
+          getRandomNumber(FEATURES.length)),
       description: 'Oписание ' + x,
       photos: PHOTOS.slice(
-        getRandomNumber(PHOTOS.length),
-        getRandomNumber(PHOTOS.length)),
+          getRandomNumber(PHOTOS.length),
+          getRandomNumber(PHOTOS.length)),
     },
     location: {
       x: getRandomNumber(map.getBoundingClientRect().width),
