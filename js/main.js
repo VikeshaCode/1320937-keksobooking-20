@@ -15,6 +15,16 @@ var toNounString = function (number, titles) {
   return titles[2];
 };
 
+var map = document.querySelector('.map');
+var adForm = document.querySelector('.ad-form');
+var addressField = adForm.querySelector('#address');
+var mapFilters = document.querySelector('.map__filters');
+var formFieldsets = adForm.querySelectorAll('fieldset');
+var mapFiltersInputs = mapFilters.querySelectorAll('select, fieldset');
+var mapPinMain = document.querySelector('.map__pin--main');
+var MAP_PIN_MAIN_WIDTH = 65;
+var MAP_PIN_MAIN_HEIGHT = 84;
+
 var HOUSE_TYPES_MAPPING = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -25,9 +35,6 @@ var HOUSE_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
 
 var getRandomNumber = function (maxNumber) {
   return Math.round(Math.random() * maxNumber);
@@ -172,14 +179,67 @@ var fillAdvertCard = function (cardData, template) {
   }
 };
 
-var data = generateArray();
-fillPins(data);
+var advertsData = generateArray();
+//
+// var firstAdvertData = data[0];
+// var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+// var mapCard = cardTemplate.cloneNode(true);
+// fillAdvertCard(firstAdvertData, mapCard);
 
-var firstAdvertData = data[0];
-var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-var mapCard = cardTemplate.cloneNode(true);
-fillAdvertCard(firstAdvertData, mapCard);
+// var mapPins = document.querySelector('.map .map__pins');
+// mapPins.insertAdjacentElement('afterend', mapCard);
 
-var mapPins = document.querySelector('.map .map__pins');
-mapPins.insertAdjacentElement('afterend', mapCard);
+// Блокирует или активирует поля формы
+var disable = function (elements, state) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].setAttribute('disabled', state);
+  }
+};
+
+disable(formFieldsets, 'true');
+disable(mapFiltersInputs, 'true');
+
+// Определение координаты главной метки
+var getPinCoords = function () {
+  var coords = {};
+  if (map.classList.contains('map--hidden')) {
+    coords.x = mapPinMain.offsetLeft + MAP_PIN_MAIN_WIDTH / 2;
+    coords.y = mapPinMain.offsetTop + MAP_PIN_MAIN_WIDTH / 2;
+  } else {
+    coords.x = mapPinMain.offsetLeft + MAP_PIN_MAIN_WIDTH / 2;
+    coords.y = mapPinMain.offsetTop + MAP_PIN_MAIN_HEIGHT;
+  }
+  return coords;
+};
+
+// Устанавливает значение в поле адреса
+var setAddress = function () {
+  var address = getPinCoords();
+  addressField.value = address.x + ', ' + address.y;
+};
+
+// Активирует сайт
+var activate = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  disable(formFieldsets, 'false');
+  disable(mapFiltersInputs, 'false');
+  fillPins(advertsData);
+};
+
+// Активирует сайт при взаимодействии с главной меткой
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    activate();
+    setAddress();
+  }
+});
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    activate();
+    setAddress();
+  }
+});
+
 
