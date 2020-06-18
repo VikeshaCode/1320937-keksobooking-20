@@ -54,12 +54,12 @@ var generateObject = function (x) {
       checkin: TIMES[getRandomNumber(TIMES.length)],
       checkout: TIMES[getRandomNumber(TIMES.length)],
       features: FEATURES.slice(
-        getRandomNumber(FEATURES.length),
-        getRandomNumber(FEATURES.length)),
+          getRandomNumber(FEATURES.length),
+          getRandomNumber(FEATURES.length)),
       description: 'Oписание ' + x,
       photos: PHOTOS.slice(
-        getRandomNumber(PHOTOS.length),
-        getRandomNumber(PHOTOS.length)),
+          getRandomNumber(PHOTOS.length),
+          getRandomNumber(PHOTOS.length)),
     },
     location: {
       x: getRandomNumber(map.getBoundingClientRect().width),
@@ -275,4 +275,86 @@ var setMinPriceValue = function (evt) {
   priceField.placeholder = minPrice;
 };
 
+// При изменении типа жилья устанавливает новую минимальную цену
 typeField.addEventListener('change', setMinPriceValue);
+
+// Устаналивет соответствующее время выезда
+var setCheckoutValue = function () {
+  for (var i = 0; i < timeoutField.length; i++) {
+    if (timeoutField[i].value === timeinField.value) {
+      timeoutField[i].selected = true;
+    }
+  }
+};
+
+// Устаналивет соответствующее время заезда
+var setCheckinValue = function () {
+  for (var i = 0; i < timeinField.length; i++) {
+    if (timeinField[i].value === timeoutField.value) {
+      timeinField[i].selected = true;
+    }
+  }
+};
+
+// Проверяет поле выбора количества гостей на валидность
+var checkCapacity = function () {
+  switch (roomNumberField.value) {
+    case '1':
+      if (capacityField.value === '3' || capacityField.value === '2' || capacityField.value === '0') {
+        roomNumberField.setCustomValidity('Только для 1 гостя');
+      } else {
+        roomNumberField.setCustomValidity('');
+      }
+      break;
+
+    case '2':
+      if (capacityField.value === '3' || capacityField.value === '0') {
+        roomNumberField.setCustomValidity('Только для 1-го или 2-х гостей');
+      } else {
+        roomNumberField.setCustomValidity('');
+      }
+      break;
+
+    case '3':
+      if (capacityField.value === '0') {
+        roomNumberField.setCustomValidity('Только для 1-го, 2-х или 3-х гостей');
+      } else {
+        roomNumberField.setCustomValidity('');
+      }
+      break;
+
+    case '100':
+      if (capacityField.value !== '0') {
+        roomNumberField.setCustomValidity('Не для гостей');
+      } else {
+        roomNumberField.setCustomValidity('');
+      }
+      break;
+  }
+};
+
+// При изменении значения поля выбора количества гостей проверяем его на валидность
+capacityField.addEventListener('change', function () {
+  checkCapacity();
+});
+
+// При изменени количества комнат, устанавливаем разрешённые варианты выбора количества гостей, проверяем его на валидность
+roomNumberField.addEventListener('change', function () {
+  checkCapacity();
+});
+
+// Дополнительные проверки на валидность при отправке формы
+adForm.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  checkCapacity();
+});
+
+// При изменении времени заезда, устанавливаем новое время выезда
+timeinField.addEventListener('change', function () {
+  setCheckoutValue();
+});
+
+// При изменении времени выезда, устанавливаем новое время заезда
+timeoutField.addEventListener('change', function () {
+  setCheckinValue();
+});
