@@ -396,11 +396,8 @@ priceField.addEventListener('invalid', function () {
   }
 });
 
-var MAX_PRICE = 1000000;
-
 priceField.addEventListener('input', function () {
-  var maxValue = priceField.value.max;
-  if (maxValue > MAX_PRICE) {
+  if (priceField.value > priceField.max) {
     priceField.setCustomValidity('Максимальная цена не может превышать 1 000 000');
   } else {
     priceField.setCustomValidity('');
@@ -411,7 +408,6 @@ priceField.addEventListener('input', function () {
 avatarField.addEventListener('change', function (evt) {
   if (evt.target.files[0].type !== 'image/jpeg' && evt.target.files[0].type !== 'image/png') {
     evt.target.setCustomValidity('Аватар может быть только изображением в формате jpg или png');
-    evt.target.reportValidity();
   }
 });
 
@@ -420,7 +416,6 @@ photoField.addEventListener('change', function (evt) {
   for (var i = 0; i < evt.target.files.length; i++) {
     if (evt.target.files[i].type !== 'image/jpeg' && evt.target.files[i].type !== 'image/png') {
       evt.target.setCustomValidity('Фотографии могут быть только изображениями в формате jpg или png');
-      evt.target.reportValidity();
     }
   }
 });
