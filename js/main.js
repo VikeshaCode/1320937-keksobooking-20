@@ -23,19 +23,19 @@ var getRandomNumber = function (maxNumber) {
  */
 var map = document.querySelector('.map');
 var mapFilters = document.querySelector('.map__filters');
-var MAP_MAIN_PIN = document.querySelector('.map__pin--main');
+var mapMainPin = document.querySelector('.map__pin--main');
 var MAP_PIN_MAIN_WIDTH = 65;
 var MAP_PIN_MAIN_HEIGHT = 84;
-var MAP_PINS_CONTAINER = document.querySelector('.map .map__pins');
+var mapPinsContainer = document.querySelector('.map .map__pins');
 
-var OFFER_FORM = document.querySelector('.ad-form');
-var OFFER_ADDRESS_FIELD = OFFER_FORM.querySelector('#address');
+var offerForm = document.querySelector('.ad-form');
+var offerAddressField = offerForm.querySelector('#address');
 
-var ALL_OFFERS_FIELDSETS = OFFER_FORM.querySelectorAll('fieldset');
-var ALL_MAP_INPUT_FILTERS = mapFilters.querySelectorAll('select, fieldset');
+var allOffersFieldsets = offerForm.querySelectorAll('fieldset');
+var allMapInputFilters = mapFilters.querySelectorAll('select, fieldset');
 
-var TEMPLATE_MAP_PIN = document.querySelector('#pin').content.querySelector('.map__pin');
-var TEMPLATE_CARD = document.querySelector('#card').content.querySelector('.map__card');
+var templateMapPin = document.querySelector('#pin').content.querySelector('.map__pin');
+var templateCard = document.querySelector('#card').content.querySelector('.map__card');
 var mapCard = null;
 
 var HOUSE_TYPES_MAPPING = {
@@ -89,7 +89,7 @@ var generateOffers = function () {
 };
 
 var createPin = function (offer) {
-  var element = TEMPLATE_MAP_PIN.cloneNode(true);
+  var element = templateMapPin.cloneNode(true);
   element.style.left = offer.location.x + (MAP_PIN_MAIN_WIDTH / 2) + 'px';
   element.style.top = offer.location.y + (MAP_PIN_MAIN_HEIGHT / 2) + 'px';
   element.style.transform = 'translate(-50%, -100%)';
@@ -109,11 +109,11 @@ var fillPins = function (offers) {
     var pin = createPin(offers[i]);
     fragment.appendChild(pin);
   }
-  MAP_PINS_CONTAINER.appendChild(fragment);
+  mapPinsContainer.appendChild(fragment);
 };
 // Заполняет карточку объявления
 var fillOfferCard = function (offer) {
-  var template = TEMPLATE_CARD.cloneNode(true);
+  var template = templateCard.cloneNode(true);
   var popupTitle = template.querySelector('.popup__title');
   var popupAddress = template.querySelector('.popup__text--address');
   var popupPrice = template.querySelector('.popup__text--price');
@@ -198,7 +198,7 @@ var fillOfferCard = function (offer) {
   });
 
   mapCard = template;
-  MAP_PINS_CONTAINER.insertAdjacentElement('afterend', mapCard);
+  mapPinsContainer.insertAdjacentElement('afterend', mapCard);
 };
 // Генерируем массив объявлений
 var offersArray = generateOffers();
@@ -214,18 +214,18 @@ var disable = function (elements, state) {
   }
 };
 // Выключаем все инпуты формы объявления при загрузке
-disable(ALL_OFFERS_FIELDSETS, true);
-disable(ALL_MAP_INPUT_FILTERS, true);
+disable(allOffersFieldsets, true);
+disable(allMapInputFilters, true);
 
 // Определение координаты главной метки
 var getPinCoords = function () {
   var coords = {};
   if (map.classList.contains('map--hidden')) {
-    coords.x = MAP_MAIN_PIN.offsetLeft + MAP_PIN_MAIN_WIDTH / 2;
-    coords.y = MAP_MAIN_PIN.offsetTop + MAP_PIN_MAIN_WIDTH / 2;
+    coords.x = mapMainPin.offsetLeft + MAP_PIN_MAIN_WIDTH / 2;
+    coords.y = mapMainPin.offsetTop + MAP_PIN_MAIN_WIDTH / 2;
   } else {
-    coords.x = MAP_MAIN_PIN.offsetLeft + MAP_PIN_MAIN_WIDTH / 2;
-    coords.y = MAP_MAIN_PIN.offsetTop + MAP_PIN_MAIN_HEIGHT;
+    coords.x = mapMainPin.offsetLeft + MAP_PIN_MAIN_WIDTH / 2;
+    coords.y = mapMainPin.offsetTop + MAP_PIN_MAIN_HEIGHT;
   }
   return coords;
 };
@@ -233,42 +233,42 @@ var getPinCoords = function () {
 // Устанавливает значение в поле адреса
 var setAddress = function () {
   var address = getPinCoords();
-  OFFER_ADDRESS_FIELD.value = address.x + ', ' + address.y;
+  offerAddressField.value = address.x + ', ' + address.y;
 };
 
 // Активирует сайт
 var activate = function () {
   map.classList.remove('map--faded');
-  OFFER_FORM.classList.remove('ad-form--disabled');
-  disable(ALL_OFFERS_FIELDSETS, false);
-  disable(ALL_MAP_INPUT_FILTERS, false);
+  offerForm.classList.remove('ad-form--disabled');
+  disable(allOffersFieldsets, false);
+  disable(allMapInputFilters, false);
   fillPins(offersArray);
 };
 
 // // Активирует сайт при взаимодействии с главной меткой
-MAP_MAIN_PIN.addEventListener('mousedown', function (evt) {
+mapMainPin.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     activate();
     setAddress();
   }
 });
 
-MAP_MAIN_PIN.addEventListener('keydown', function (evt) {
+mapMainPin.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     activate();
     setAddress();
   }
 });
 
-var typeField = OFFER_FORM.querySelector('#type');
-var priceField = OFFER_FORM.querySelector('#price');
-var timeinField = OFFER_FORM.querySelector('#timein');
-var timeoutField = OFFER_FORM.querySelector('#timeout');
-var roomNumberField = OFFER_FORM.querySelector('#room_number');
-var capacityField = OFFER_FORM.querySelector('#capacity');
-var titleField = OFFER_FORM.querySelector('#title');
-var photoField = OFFER_FORM.querySelector('#images');
-var avatarField = OFFER_FORM.querySelector('#avatar');
+var typeField = offerForm.querySelector('#type');
+var priceField = offerForm.querySelector('#price');
+var timeinField = offerForm.querySelector('#timein');
+var timeoutField = offerForm.querySelector('#timeout');
+var roomNumberField = offerForm.querySelector('#room_number');
+var capacityField = offerForm.querySelector('#capacity');
+var titleField = offerForm.querySelector('#title');
+var photoField = offerForm.querySelector('#images');
+var avatarField = offerForm.querySelector('#avatar');
 
 
 // Устанавливает минимальное значение цены
@@ -446,7 +446,7 @@ roomNumberField.addEventListener('change', function () {
 });
 
 // Дополнительные проверки на валидность при отправке формы
-OFFER_FORM.addEventListener('submit', function (evt) {
+offerForm.addEventListener('submit', function (evt) {
   evt.preventDefault();
   checkCapacity();
 });
