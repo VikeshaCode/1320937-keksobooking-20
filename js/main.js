@@ -21,18 +21,18 @@ var getRandomNumber = function (maxNumber) {
 /*
  * Элементы страницы
  */
-var MAP = document.querySelector('.map'); // Offers map
-var MAP_FILTERS = document.querySelector('.map__filters');
+var map = document.querySelector('.map');
+var mapFilters = document.querySelector('.map__filters');
 var MAP_MAIN_PIN = document.querySelector('.map__pin--main');
 var MAP_PIN_MAIN_WIDTH = 65;
 var MAP_PIN_MAIN_HEIGHT = 84;
 var MAP_PINS_CONTAINER = document.querySelector('.map .map__pins');
 
-var OFFER_FORM = document.querySelector('.ad-form'); // Offer's form
+var OFFER_FORM = document.querySelector('.ad-form');
 var OFFER_ADDRESS_FIELD = OFFER_FORM.querySelector('#address');
 
 var ALL_OFFERS_FIELDSETS = OFFER_FORM.querySelectorAll('fieldset');
-var ALL_MAP_INPUT_FILTERS = MAP_FILTERS.querySelectorAll('select, fieldset');
+var ALL_MAP_INPUT_FILTERS = mapFilters.querySelectorAll('select, fieldset');
 
 var TEMPLATE_MAP_PIN = document.querySelector('#pin').content.querySelector('.map__pin');
 var TEMPLATE_CARD = document.querySelector('#card').content.querySelector('.map__card');
@@ -64,15 +64,15 @@ var generateOffer = function (x) {
       checkin: TIMES[getRandomNumber(TIMES.length)],
       checkout: TIMES[getRandomNumber(TIMES.length)],
       features: FEATURES.slice(
-        getRandomNumber(FEATURES.length),
-        getRandomNumber(FEATURES.length)),
+          getRandomNumber(FEATURES.length),
+          getRandomNumber(FEATURES.length)),
       description: 'Oписание ' + x,
       photos: PHOTOS.slice(
-        getRandomNumber(PHOTOS.length),
-        getRandomNumber(PHOTOS.length)),
+          getRandomNumber(PHOTOS.length),
+          getRandomNumber(PHOTOS.length)),
     },
     location: {
-      x: getRandomNumber(MAP.getBoundingClientRect().width),
+      x: getRandomNumber(map.getBoundingClientRect().width),
       y: getRandomNumber(500) + 130,
     }
   };
@@ -98,11 +98,6 @@ var createPin = function (offer) {
   img.alt = offer.offer.title;
   element.addEventListener('click', function () {
     fillOfferCard(offer);
-  });
-  element.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') {
-      fillOfferCard(offer);
-    }
   });
   return element;
 };
@@ -225,7 +220,7 @@ disable(ALL_MAP_INPUT_FILTERS, true);
 // Определение координаты главной метки
 var getPinCoords = function () {
   var coords = {};
-  if (MAP.classList.contains('map--hidden')) {
+  if (map.classList.contains('map--hidden')) {
     coords.x = MAP_MAIN_PIN.offsetLeft + MAP_PIN_MAIN_WIDTH / 2;
     coords.y = MAP_MAIN_PIN.offsetTop + MAP_PIN_MAIN_WIDTH / 2;
   } else {
@@ -243,7 +238,7 @@ var setAddress = function () {
 
 // Активирует сайт
 var activate = function () {
-  MAP.classList.remove('map--faded');
+  map.classList.remove('map--faded');
   OFFER_FORM.classList.remove('ad-form--disabled');
   disable(ALL_OFFERS_FIELDSETS, false);
   disable(ALL_MAP_INPUT_FILTERS, false);
