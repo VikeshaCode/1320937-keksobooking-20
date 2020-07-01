@@ -1,8 +1,6 @@
 'use strict';
 (function () {
 
-  var mapMainPin = document.querySelector('.map__pin--main');
-  var map = document.querySelector('.map');
   var offerForm = document.querySelector('.ad-form');
   var offerAddressField = offerForm.querySelector('#address');
   var allOffersFieldsets = offerForm.querySelectorAll('fieldset');
@@ -10,50 +8,29 @@
   var allMapInputFilters = mapFilters.querySelectorAll('select, fieldset');
   var mapCard = null;
 
-  // Блокирует или активирует поля формы
-  var disable = function (elements, state) {
-    for (var i = 0; i < elements.length; i++) {
-      if (state) {
-        elements[i].setAttribute('disabled', state);
-      } else {
-        elements[i].removeAttribute('disabled');
+
+  window.form = {
+    // Блокирует или активирует поля формы
+    disable: function (elements, state) {
+      for (var i = 0; i < elements.length; i++) {
+        if (state) {
+          elements[i].setAttribute('disabled', state);
+        } else {
+          elements[i].removeAttribute('disabled');
+        }
       }
+    },
+
+    // Устанавливает значение в поле адреса
+    setAddress: function () {
+      var coords = window.pin.getPinCoords();
+      offerAddressField.value = coords.x + ', ' + coords.y;
     }
   };
 
   // Выключаем все инпуты формы объявления при загрузке
-  disable(allOffersFieldsets, true);
-  disable(allMapInputFilters, true);
-
-  // Устанавливает значение в поле адреса
-  var setAddress = function () {
-    var address = window.pin.getPinCoords();
-    offerAddressField.value = address.x + ', ' + address.y;
-  };
-
-  // Активирует сайт
-  var activate = function () {
-    map.classList.remove('map--faded');
-    offerForm.classList.remove('ad-form--disabled');
-    disable(allOffersFieldsets, false);
-    disable(allMapInputFilters, false);
-    window.map.fillPins(window.data);
-  };
-
-  // Активирует сайт при взаимодействии с главной меткой
-  mapMainPin.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) {
-      activate();
-      setAddress();
-    }
-  });
-
-  mapMainPin.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter') {
-      activate();
-      setAddress();
-    }
-  });
+  window.form.disable(allOffersFieldsets, true);
+  window.form.disable(allMapInputFilters, true);
 
   var typeField = offerForm.querySelector('#type');
   var priceField = offerForm.querySelector('#price');

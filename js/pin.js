@@ -13,6 +13,7 @@
       element.style.left = offer.location.x + (MAP_PIN_MAIN_WIDTH / 2) + 'px';
       element.style.top = offer.location.y + (MAP_PIN_MAIN_HEIGHT / 2) + 'px';
       element.style.transform = 'translate(-50%, -100%)';
+
       var img = element.firstElementChild;
       img.src = offer.author.avatar;
       img.alt = offer.offer.title;
