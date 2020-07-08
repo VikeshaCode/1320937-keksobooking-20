@@ -1,13 +1,21 @@
 'use strict';
 (function () {
 
+  var MAX_PRICE = '1000000';
   var offerForm = document.querySelector('.ad-form');
   var offerAddressField = offerForm.querySelector('#address');
   var allOffersFieldsets = offerForm.querySelectorAll('fieldset');
   var mapFilters = document.querySelector('.map__filters');
   var allMapInputFilters = mapFilters.querySelectorAll('select, fieldset');
   var mapCard = null;
+  var map = document.querySelector('.map');
 
+  var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+  var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+  var main = document.querySelector('main');
+  var errorMessageElement = errorMessageTemplate.cloneNode(true);
+  var errorButton = errorMessageElement.querySelector('.error__button');
+  var successMessageElement = successMessageTemplate.cloneNode(true);
 
   window.form = {
     // Блокирует или активирует поля формы
@@ -161,7 +169,7 @@
   });
 
   priceField.addEventListener('input', function () {
-    if (priceField.value > priceField.max) {
+    if (priceField.value > MAX_PRICE) {
       priceField.setCustomValidity('Максимальная цена не может превышать 1 000 000');
     } else {
       priceField.setCustomValidity('');
@@ -212,9 +220,66 @@
     checkCapacity();
   });
 
-  // Дополнительные проверки на валидность при отправке формы
+  // Выводит сообщение об успешной отправке данных
+  var successHandler = function () {
+    var pins = map.querySelectorAll('.map__pin');
+    for (var i = 0; i < pins.length; i++) {
+      if (!pins[i].classList.contains('map__pin--main')) {
+        pins[i].remove();
+      }
+    }
+    offerForm.classList.add('ad-form--disabled');
+    offerForm.reset();
+    main.appendChild(successMessageElement);
+    document.addEventListener('keydown', successMessageKeydownHandler);
+    document.addEventListener('click', successMessageClickHandler);
+  };
+
+  // Показывает сообщение об ошибке при отправке данных
+  var errorHandler = function () {
+    main.appendChild(errorMessageElement);
+    document.addEventListener('keydown', errorMessageKeydownHandler);
+    document.addEventListener('click', errorMessageClickHandler);
+    errorButton.addEventListener('click', errorButtonClickHandler);
+  };
+
+  // Исчезновение сообщения при нажатии на Esc
+  var successMessageKeydownHandler = function (evt) {
+    if (evt.key === 'Escape') {
+      successMessageElement.remove();
+      document.removeEventListener('keydown', successMessageKeydownHandler);
+    }
+  };
+
+  // Исчезновение сообщения по клику
+  var successMessageClickHandler = function () {
+    successMessageElement.remove();
+    document.removeEventListener('click', successMessageClickHandler);
+  };
+
+  // Исчезновение сообщения при нажатии на Esc
+  var errorMessageKeydownHandler = function (evt) {
+    if (evt.key === 'Escape') {
+      errorMessageElement.remove();
+      document.removeEventListener('keydown', errorMessageKeydownHandler);
+    }
+  };
+
+  // Исчезновение сообщения по клику
+  var errorMessageClickHandler = function () {
+    errorMessageElement.remove();
+    document.removeEventListener('click', errorMessageKeydownHandler);
+  };
+
+  // Исчезновение сообщения по клику на кнопку
+  var errorButtonClickHandler = function () {
+    errorMessageElement.remove();
+    errorButton.removeEventListener('click', errorMessageKeydownHandler);
+  };
+
   offerForm.addEventListener('submit', function (evt) {
-    evt.preventDefault();
     checkCapacity();
+    evt.preventDefault();
+    window.backend.save(new FormData(offerForm), successHandler, errorHandler);
   });
 })();

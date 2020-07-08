@@ -73,12 +73,12 @@
     }
   });
 
-  var setMainPinBehavior = function () {
-    // Активируем страницу с помощью главной метки
-    setMainPinActivateHandlers();
-    // Задаём возможность перетаскивания главной метки
-    setMainPinDragAndDropHandlers();
+  window.application = {
+    setMainBehaviour: function () {
+      // Активируем страницу с помощью главной метки
+      setMainPinActivateHandlers();
+      // Задаём возможность перетаскивания главной метки
+      setMainPinDragAndDropHandlers();
+    }
   };
-
-  setMainPinBehavior();
 })();
